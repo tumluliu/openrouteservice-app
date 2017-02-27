@@ -51,7 +51,7 @@ angular.module('orsApp').directive('orsMap', () => {
                         link = L.DomUtil.create('a', 'leaflet-avoidArea', container);
                     link.href = '#';
                     link.title = 'Create a new area avoid polygon';
-                    link.innerHTML = '<i class="fa fa-square-o"></i>';
+                    link.innerHTML = '<i class="fa fa-square-o" style="vertical-align: bottom"></i>';
                     //return container;
                     L.DomEvent.on(link, 'click', L.DomEvent.stop).on(link, 'click', function() {
                         map.editTools.startPolygon();
@@ -501,7 +501,7 @@ angular.module('orsApp').directive('orsMap', () => {
     };
 });
 // directive to control the popup to add waypoints on the map
-angular.module('orsApp').directive('orsPopup', ['$compile', '$timeout', 'orsSettingsFactory', ($compile, $timeout, orsSettingsFactory) => {
+angular.module('orsApp').directive('orsPopup', ['$compile', '$timeout', 'orsSettingsFactory', 'orsUtilsService', 'orsRequestService', 'orsRouteService' , ($compile, $timeout, orsSettingsFactory, orsUtilsService, orsRequestService, orsRouteService) => {
     return {
         restrict: 'E',
         require: '^orsMap', //one directive used,
@@ -510,6 +510,40 @@ angular.module('orsApp').directive('orsPopup', ['$compile', '$timeout', 'orsSett
             scope.add = (idx) => {
                 scope.processMapWaypoint(idx, scope.displayPos);
             };
+            //what's here request
+            scope.here = () => {
+                scope.heremsg = {};
+                const lngLatString = orsUtilsService.parseLngLatString(scope.displayPos);
+                const payload = orsUtilsService.geocodingPayload(lngLatString, true);  
+                const request = orsRequestService.geocode(payload);
+                request.promise.then((data) => {
+                    if (data.features.length > 0) {
+                        const addressData = orsUtilsService.addShortAddresses(data.features);
+                        //waits for loading of the site
+                        $timeout(function() {
+                            scope.heremsg = {
+                                name: addressData[0].shortaddress,
+                                pos : scope.displayPos.lat + " , " + scope.displayPos.lng ,
+                            }
+                        }, 300);
+                    } else {
+                        orsMessagingService.messageSubject.onNext(lists.errors.GEOCODE);
+                    }
+                }, (response) => {
+                    orsMessagingService.messageSubject.onNext(lists.errors.GEOCODE);
+                });
+                scope.copyToClipboard = (text) => {
+                   window.prompt("Copy to clipboard: Ctrl+C, Enter", text);
+                }
+                //
+                let popupEvent = $compile('<ors-here-popup></ors-here-popup>')(scope);
+                const pophere = L.popup({
+                    minWidth: 245,
+                    closeButton: true,
+                    className: 'cm-here-popup'
+                }).setContent(popupEvent[0]).setLatLng(scope.displayPos).openOn(scope.mapModel.map);
+            };
+
         }
     };
 }]);
@@ -524,5 +558,11 @@ angular.module('orsApp').directive('orsAaPopup', ['$compile', '$timeout', 'orsSe
                 scope.processMapWaypoint(idx, scope.displayPos, false, false);
             };
         }
+    };
+}]);
+angular.module('orsApp').directive('orsHerePopup', ['$compile', '$timeout', 'orsSettingsFactory', ($compile, $timeout, orsSettingsFactory) => {
+    return {
+        require: '^orsMap', //one directive used,
+        templateUrl: 'components/ors-map/directive-templates/ors-here-popup.html'
     };
 }]);
