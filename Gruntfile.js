@@ -245,11 +245,11 @@ module.exports = function(grunt) {
                 constants: {
                     ENV: {
                         name: 'labs',
-                        geocoding: 'https://labs-api.openrouteservice.org/geocode',
-                        routing: 'https://labs-api.openrouteservice.org/routes',
-                        tmc: 'http://labs-api.openrouteservice.org/routes?tmc',
-                        analyse: 'https://labs-api.openrouteservice.org/isochrones',
-                        places: 'https://labs-api.openrouteservice.org/locations',
+                        geocoding: 'https://labs-api.openrouteservice.org/ors/geocode',
+                        routing: 'https://labs-api.openrouteservice.org/ors/routes',
+                        tmc: 'http://labs-api.openrouteservice.org/ors/routes?tmc',
+                        analyse: 'https://labs-api.openrouteservice.org/ors/isochrones',
+                        places: 'https://labs-api.openrouteservice.org/ors/locations',
                         shortenlink: 'https://api-ssl.bitly.com/v3/shorten'
                     }
                 }
