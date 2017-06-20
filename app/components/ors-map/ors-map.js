@@ -47,10 +47,11 @@ angular.module('orsApp')
                     layerLocations: L.featureGroup(),
                     layerBoundaries: L.featureGroup()
                 };
-                const boundary = L.geoJSON(lists.labsBoundary, {
+                const boundary = L.geoJSON(lists.boundary, {
                         style: lists.layerStyles.boundary()
                     })
                     .addTo($scope.geofeatures.layerBoundaries);
+                console.info(boundary)
                 $scope.orsMap.setMaxBounds(boundary.getBounds());
                 $scope.mapModel = {
                     map: $scope.orsMap,
