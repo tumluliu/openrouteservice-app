@@ -45,7 +45,13 @@ angular.module('orsApp')
                     layerRouteNumberedMarkers: L.featureGroup(),
                     layerRouteExtras: L.featureGroup(),
                     layerLocations: L.featureGroup(),
+                    layerBoundaries: L.featureGroup()
                 };
+                const boundary = L.geoJSON(lists.labsBoundary, {
+                        style: lists.layerStyles.boundary()
+                    })
+                    .addTo($scope.geofeatures.layerBoundaries);
+                $scope.orsMap.setMaxBounds(boundary.getBounds());
                 $scope.mapModel = {
                     map: $scope.orsMap,
                     geofeatures: $scope.geofeatures
