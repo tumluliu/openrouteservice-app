@@ -594,9 +594,10 @@ angular.module('orsApp')
                 };
             },
             boundary: function() {
+                console.log('STYLE')
                 return {
                     "color": "#cf5f5f",
-                    "weight": 4,
+                    "weight": 10,
                     "opacity": 0.5,
                     //"fillOpacity": 0.5
                 };
