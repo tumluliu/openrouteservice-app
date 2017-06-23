@@ -300,25 +300,30 @@ angular.module('orsApp')
                 },
             },
             hgvParams: {
-                Length: {
+                length: {
                     min: 2,
-                    max: 15
+                    max: 15,
+                    value: 'length'
                 },
-                Height: {
+                height: {
                     min: 2,
-                    max: 5
+                    max: 5,
+                    value: 'height'
                 },
-                Width: {
+                width: {
                     min: 2,
-                    max: 5
+                    max: 5,
+                    value: 'width'
                 },
-                Weight: {
+                hgvWeight: {
                     min: 1,
-                    max: 100
+                    max: 100,
+                    value: 'weight'
                 },
-                AxleLoad: {
+                axleload: {
                     min: 1,
-                    max: 100
+                    max: 100,
+                    value: 'axleload'
                 }
             },
             maxspeeds: {
@@ -514,7 +519,10 @@ angular.module('orsApp')
             tollroads: 'l6',
             tunnels: 'l7',
             tracks: 'l8',
-            green: 'm1'
+            green: 'm1',
+            lat: 'n1',
+            lng: 'n2',
+            zoom: 'n3'
         },
         reversePermalinkKeys: function(obj) {
             var rev = {};
