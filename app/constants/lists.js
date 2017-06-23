@@ -598,8 +598,8 @@ angular.module('orsApp')
                 return {
                     "color": "#cf5f5f",
                     "weight": 10,
-                    "opacity": 0.5,
-                    //"fillOpacity": 0.5
+                    "opacity": 1,
+                    "fillOpacity": 0
                 };
             }
         },
