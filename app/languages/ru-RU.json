@@ -139,7 +139,7 @@
     "CENTER": "Использовать как точку отсчёта",
     "WELCOME": "Добро пожаловать на OpenRouteService",
     "WELCOME_MESSAGE": "Используйте широкий набор параметров в панеле слева, для получения оптимального для Вас маршрута. Чтобы указать зоны, которые Вы хотели бы избежать, можно использовать элемент управления, находящийся в правом верхнем углу. Для переключения в режим построения зон доступности, нажмите на кнопку в самой левой вертикальной панели.",
-    "LABS_MESSAGE": "Welcome to the OpenRouteService labs project. Within this application you will find experimental features to play around with. Amongst these you will able to find:<br><br><strong>- Green routing</strong><br><strong>- Infield routing</strong><br><br>and many more features to follow!",
+    "LABS_MESSAGE": "Welcome to the OpenRouteService labs project. Within this application you will find experimental features to play around with. Amongst these you will able to find:<br><br><strong>- Green routing</strong><br><strong>- Infield routing</strong><br><strong>- POI services</strong><br><br>and many more features to follow!",
     "EXTRAS": "Дополнительно",
     "WHATSHERE": "Что здесь?",
     "NO_ADDRESS": "Указанный адрес не может быть найден.",

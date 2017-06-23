@@ -139,7 +139,7 @@
     "CENTER": "Użyj jako środek",
     "WELCOME": "Witaj w planerze!",
     "WELCOME_MESSAGE": "W celu dodanie obszarów wyłączonych z nawigacji proszę użyj opcji w prawym górnym roku mapy. W każdym innym przypadku ciesz się opcjami w lewym panelu. Wypróbuj również nowe opcje izochron na lewej krawędzi panelu.",
-    "LABS_MESSAGE": "Welcome to the OpenRouteService labs project. Within this application you will find experimental features to play around with. Amongst these you will able to find:<br><br><strong>- Green routing</strong><br><strong>- Infield routing</strong><br><br>and many more features to follow!",
+    "LABS_MESSAGE": "Welcome to the OpenRouteService labs project. Within this application you will find experimental features to play around with. Amongst these you will able to find:<br><br><strong>- Green routing</strong><br><strong>- Infield routing</strong><br><strong>- POI services</strong><br><br>and many more features to follow!",
     "EXTRAS": "Dodatkowe informacje",
     "WHATSHERE": "Co tu jest?",
     "NO_ADDRESS": "Adres nie został znaleziony.",

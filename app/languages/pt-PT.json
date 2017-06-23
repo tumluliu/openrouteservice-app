@@ -139,7 +139,7 @@
     "CENTER": "Usar como centro",
     "WELCOME": "Bem-vindo ao OpenRouteService.org",
     "WELCOME_MESSAGE": "Para adicionar áreas a evitar, use o controlo disponível no canto superior direito do mapa. Explore também as restantes funcionalidades disponibilizadas no painel esquerdo, com destaque para o novo método de cálculo de Isocronas.",
-    "LABS_MESSAGE": "Welcome to the OpenRouteService labs project. Within this application you will find experimental features to play around with. Amongst these you will able to find:<br><br><strong>- Green routing</strong><br><strong>- Infield routing</strong><br><br>and many more features to follow!",
+    "LABS_MESSAGE": "Welcome to the OpenRouteService labs project. Within this application you will find experimental features to play around with. Amongst these you will able to find:<br><br><strong>- Green routing</strong><br><strong>- Infield routing</strong><br><strong>- POI services</strong><br><br>and many more features to follow!",
     "EXTRAS": "Informação adicional",
     "WHATSHERE": "O que se encontra aqui?",
     "NO_ADDRESS": "Nenhum endereço foi encontrado.",

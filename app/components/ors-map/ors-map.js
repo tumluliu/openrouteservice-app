@@ -799,7 +799,7 @@ angular.module('orsApp')
                             };
                             $scope.callLocations = () => {
                                 $scope.loading = true;
-                                settings = {
+                                let settings = {
                                     categories: [],
                                     subCategories: []
                                 };

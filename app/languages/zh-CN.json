@@ -139,7 +139,7 @@
     "CENTER": "作为中心点",
     "WELCOME": "欢迎使用OpenRouteService.org",
     "WELCOME_MESSAGE": "使用地图右上角的小工具可以在图上添加不可通行的区域。左侧的控制面板中提供了大量路径规划的控制选项，请随意使用。那里还有最新发布的可达性分析功能，也可以试试看哦",
-    "LABS_MESSAGE": "Welcome to the OpenRouteService labs project. Within this application you will find experimental features to play around with. Amongst these you will able to find:<br><br><strong>- Green routing</strong><br><strong>- Infield routing</strong><br><br>and many more features to follow!",
+    "LABS_MESSAGE": "Welcome to the OpenRouteService labs project. Within this application you will find experimental features to play around with. Amongst these you will able to find:<br><br><strong>- Green routing</strong><br><strong>- Infield routing</strong><br><strong>- POI services</strong><br><br>and many more features to follow!",
     "EXTRAS": "其它信息",
     "WHATSHERE": "这是哪儿？",
     "NO_ADDRESS": "查不到这里的地址",
