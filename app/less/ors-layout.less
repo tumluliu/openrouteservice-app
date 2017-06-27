@@ -1,11 +1,10 @@
-/** body and flex styles */
-
+@import 'variables.less';
 html, body {
     font-size: 90% !important;
     display: flex;
     height: 100%;
     flex-direction: column;
-    color: #444;
+    color: @textColorOrs;
     margin: 0;
     padding: 0;
 }
@@ -19,7 +18,7 @@ html, body {
 .ors-left {
     order: 1;
     z-index: 1;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    box-shadow: @boxShadow;
     flex: 0 1 388px;
     height: 100%;
     display: -webkit-box;
@@ -39,13 +38,12 @@ html, body {
     z-index: 0;
 }
 
-.ors-brand img {
-    width: 150px;
-    height: auto;
+.ors-brand {
+    img {
+        width: 150px;
+        height: auto;
+    }
 }
-
-
-/** responsive flex styles */
 
 @media screen and (min-width: 319px) and (max-width: 720px) {
     .ors-main {

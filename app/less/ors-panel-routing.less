@@ -1,7 +1,3 @@
-/** routing styles */
-
-/** waypoint list */
-
 .ors-wp-list {
     clear: both;
     list-style: none outside none;
@@ -15,8 +11,10 @@
     cursor: move;
 }
 
-.ui-sortable-disabled .ors-wp-item {
-    cursor: default;
+.ui-sortable-disabled {
+    .ors-wp-item {
+        cursor: default;
+    }
 }
 
 div.ors-wp-table {
@@ -44,22 +42,23 @@ input:focus, input:active {
 .ors-input-label {
     border-left: none !important;
     padding: 10px 8px 0 0 !important;
-}
-
-.ors-input-label button {
-    visibility: hidden !important;
-}
-
-.ors-input-label button.show {
-    visibility: visible !important;
+    button {
+        visibility: hidden !important;
+    }
+    button.show {
+        visibility: visible !important;
+    }
 }
 
 .ors-addresses {
     padding: 15px 0 15px 0;
     font-weight: normal;
-}
-
-.ors-addresses .item .ng-binding:hover {
-    color: black;
-    cursor: pointer;
+    .item {
+        .ng-binding {
+            &:hover {
+                color: black;
+                cursor: pointer;
+            }
+        }
+    }
 }

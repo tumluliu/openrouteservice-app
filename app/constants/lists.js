@@ -602,7 +602,6 @@ angular.module('orsApp')
                 };
             },
             boundary: function() {
-                console.log('STYLE')
                 return {
                     "color": "#cf5f5f",
                     "weight": 10,
@@ -736,5 +735,16 @@ angular.module('orsApp')
                     ]
                 }
             }]
+        },
+        measure_locale: {
+            'de-DE': 'de',
+            'en-US': 'en',
+            'en-GB': 'en_UK',
+            'zh-CN': 'cn',
+            'pt-PT': 'pt_PT',
+            'es-ES': 'es',
+            'ru-RU': 'ru',
+            'fr-FR': 'fr',
+            'pl-PL': 'pl'
         }
     });

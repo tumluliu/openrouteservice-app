@@ -1,21 +1,17 @@
-/** common styles */
-
+@import 'variables.less';
 a {
     transition: color .4s;
     color: #265C83;
-}
-
-a:link, a:visited {
-    color: #265C83;
-}
-
-a:hover {
-    color: #7FDBFF;
-}
-
-a:active {
-    transition: color .3s;
-    color: #007BE6;
+    &:link, &:visited {
+        color: #265C83;
+    }
+    &:hover {
+        color: #7FDBFF;
+    }
+    &:active {
+        transition: color .3s;
+        color: #007BE6;
+    }
 }
 
 h3, h4, h5 {
@@ -40,10 +36,13 @@ h3, h4, h5 {
     border: none;
     color: #444;
     outline: none;
+    &:hover {
+        color: #cd6060;
+    }
 }
 
-.ors-button:hover {
-    color: #cd6060;
+span tooltip {
+    box-sizing: initial!important;
 }
 
 .ors-controls-button {
@@ -53,6 +52,21 @@ h3, h4, h5 {
     color: rgba(0, 0, 0, 0.7);
     background-color: #FFF;
     outline: none;
+    tooltip {
+        box-sizing: initial !important;
+    }
+    i {
+        &:hover {
+            color: #cd6060;
+        }
+    }
+    span {
+        i {
+            &:hover {
+                color: #cd6060;
+            }
+        }
+    }
 }
 
 .ors-route-card {
@@ -68,39 +82,25 @@ h3, h4, h5 {
     -ms-user-select: none;
     user-select: none;
     cursor: pointer;
-}
-
-.ors-route-card .left {
-    color: rgba(0, 0, 0, 0.7);
-    padding: 1rem;
-    flex: 0 0 15%;
-}
-
-.ors-route-card .right {
-    color: rgba(0, 0, 0, 0.7);
-    flex: 1 1 auto;
-    padding: 1rem;
-    -display: flex;
-    flex-direction: column;
-}
-
-.ors-route-card .right-2 {
-    color: rgba(0, 0, 0, 0.7);
-    flex: 1 1 auto;
-    text-align: right;
-    padding-top: 0.2rem;
-    padding-right: 0rem;
-}
-
-
-/** this is needed for position of tooltip on body */
-
-.ors-controls-button tooltip, span tooltip {
-    box-sizing: initial !important;
-}
-
-.ors-controls-button i:hover, span i:hover {
-    color: #cd6060;
+    .left {
+        color: rgba(0, 0, 0, 0.7);
+        padding: 1rem 1rem 0 1rem;
+        flex: 0 0 15%;
+    }
+    .right {
+        color: rgba(0, 0, 0, 0.7);
+        flex: 1 1 auto;
+        padding: 1rem 1rem 0 1rem;
+        -display: flex;
+        flex-direction: column;
+    }
+    .right-2 {
+        color: rgba(0, 0, 0, 0.7);
+        flex: 1 1 auto;
+        text-align: right;
+        padding-top: 0.2rem;
+        padding-right: 0rem;
+    }
 }
 
 tooltip tip {
@@ -137,9 +137,11 @@ tooltip._multiline {
     text-align: justify !important;
 }
 
-#loading-bar .bar {
-    background: #b5152b;
-    height: 3px;
+#loading-bar {
+    .bar {
+        background: #b5152b;
+        height: 3px;
+    }
 }
 
 .block {
@@ -180,11 +182,23 @@ label, .label {
 .ors-route-controls, .ors-instruction-controls {
     height: 39px;
     width: 340px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
-.ors-summary ul, .ors-navigation ul {
-    padding: 0;
-    margin: 0;
+.ors-route-controls {
+    /** https://jsfiddle.net/vhem8scs/2/ */
+    div:last-child {
+        margin-left: auto;
+    }
+}
+
+.ors-summary, .ors-navigation {
+    ul {
+        padding: 0;
+        margin: 0;
+    }
 }
 
 .summary-item {
@@ -192,10 +206,9 @@ label, .label {
     align-items: center;
     margin-bottom: 10px;
     margin-right: 10px;
-}
-
-.summary-item span {
-    padding-right: 5px;
+    span {
+        padding-right: 5px;
+    }
 }
 
 button.summary-select {
@@ -209,12 +222,12 @@ button.summary-select {
 }
 
 .top-border {
-    border-top: 1px solid #edf3f5;
+    border-top: 1px solid @borderColor;
 }
 
 .bottom-border {
     height: 1px;
-    border-bottom: .1rem solid #edf3f5;
+    border-bottom: .1rem solid @borderColor;
     margin: auto;
 }
 
@@ -241,10 +254,9 @@ button.summary-select {
     padding-left: 10px;
     padding-top: 10px;
     display: block;
-}
-
-.ors-options-menu li {
-    padding-bottom: 5px;
+    li {
+        padding-bottom: 5px;
+    }
 }
 
 .restrict-height-200 {
@@ -259,10 +271,9 @@ button.summary-select {
 
 .ors-options-input {
     height: 35px;
-}
-
-.ors-options-input input {
-    width: 150px;
+    input {
+        width: 150px;
+    }
 }
 
 .options-box {
@@ -272,17 +283,18 @@ button.summary-select {
     cursor: pointer;
 }
 
-.options-box span {
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-
-.options-box i {
-    color: #444;
+.options-box {
+    span {
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+    i {
+        color: #444;
+    }
 }
 
 .collapsable {
@@ -309,4 +321,15 @@ button.summary-select {
     border-radius: 5px;
     background-color: rgba(0, 0, 0, .5);
     -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+}
+
+
+/* 
+  Allow angular.js to be loaded in body, hiding cloaked elements until 
+  templates compile.  The !important is important given that there may be 
+  other selectors that are more specific or come later and might alter display.  
+ */
+
+[ng\:cloak], [ng-cloak], .ng-cloak {
+    display: none !important;
 }
