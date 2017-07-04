@@ -159,6 +159,7 @@ angular.module('orsApp.utils-service', [])
                 instructions: true,
                 geometry: true,
                 units: 'm',
+                attributes: 'detourfactor|percentage',
                 instructions_format: 'html',
                 elevation: lists.profiles[settings.profile.type].elevation,
                 options: JSON.stringify(orsUtilsService.generateOptions(settings))
@@ -180,10 +181,11 @@ angular.module('orsApp.utils-service', [])
             // extras
             if (lists.profiles[settings.profile.type].green === true) {
                 payload.extra_info = 'surface|waytype|suitability|steepness|green';
+            } else if (lists.profiles[settings.profile.type].elevation === true) {
+                payload.extra_info = 'surface|waytype|suitability|steepness';
             } else {
                 payload.extra_info = 'surface|waytype|suitability';
             }
-            console.log(payload)
             return payload;
         };
         /** 
