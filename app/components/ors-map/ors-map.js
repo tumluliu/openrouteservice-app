@@ -115,8 +115,7 @@ angular.module('orsApp')
                 orsSettingsFactory.userOptionsSubject.subscribe(settings => {
                     if (settings.language) {
                         $scope.mapModel.map.removeControl($scope.measureControl);
-                        // TODO Amandus
-                        measureControlOptions.localization = settings.language.substr(0, 2);
+                        measureControlOptions.localization = lists.measure_locale[settings.language];
                         $scope.measureControl = L.control.measure(measureControlOptions)
                             .addTo($scope.mapModel.map);
                         const el = angular.element(document.querySelector('.js-toggle'))
@@ -542,6 +541,10 @@ angular.module('orsApp')
                         iconSize: L.point(17, 17)
                     });
                 };
+                $scope.getGradientColor = (rangePos) => {
+                    const hsl = Math.floor(120 - 120 * rangePos);
+                    return "hsl(" + hsl + ", 100%, 50%" + ")";
+                };
                 /** 
                  * adds polygon array to specific layer
                  * @param {Object} actionPackage - The action actionPackage
@@ -559,14 +562,10 @@ angular.module('orsApp')
                         });
                     });
                     if (add) {
-                        const getGradientColor = (rangePos) => {
-                            const hsl = Math.floor(120 - 120 * rangePos);
-                            return "hsl(" + hsl + ", 100%, 50%" + ")";
-                        };
                         let isochrones = new L.FeatureGroup();
                         for (let i = actionPackage.geometry.length - 1; i >= 0; i--) {
                             L.polygon(actionPackage.geometry[i].geometry.coordinates[0], {
-                                    fillColor: actionPackage.geometry.length == 1 ? getGradientColor(1) : getGradientColor(i / (actionPackage.geometry.length - 1)),
+                                    fillColor: actionPackage.geometry.length == 1 ? $scope.getGradientColor(1) : $scope.getGradientColor(i / (actionPackage.geometry.length - 1)),
                                     color: '#FFF',
                                     weight: 1,
                                     fillOpacity: 1,
@@ -576,13 +575,46 @@ angular.module('orsApp')
                                 .addTo(isochrones);
                         }
                         isochrones.addTo($scope.mapModel.geofeatures[actionPackage.layerCode]);
-                        // hack to change opacity of entire overlaypane layer but prevent opacity of stroke
-                        let svg = d3.select($scope.mapModel.map.getPanes()
-                                .isochronesPane)
-                            .style("opacity", 0.5);
-                        svg.selectAll("path")
-                            .style("stroke-opacity", 1);
+                        $scope.opacityIsochrones();
                     }
+                };
+                /** 
+                 * adds polygon array to specific layer but skip intervals
+                 * @param {Object} actionPackage - The action actionPackage
+                 */
+                $scope.togglePolygonsIntervals = (actionPackage) => {
+                    $scope.mapModel.geofeatures[actionPackage.layerCode].eachLayer((layer) => {
+                        layer.eachLayer((isochrone) => {
+                            if (isochrone.options.index == actionPackage.featureId) {
+                                $scope.mapModel.geofeatures[actionPackage.layerCode].removeLayer(layer);
+                            }
+                        });
+                    });
+                    let isochrones = new L.FeatureGroup();
+                    for (let i = actionPackage.geometry.length - 1; i >= 0; i--) {
+                        // if i is in the list of indices of intervals to be hidden, skip
+                        if (actionPackage.extraInformation.intervalIndices.indexOf(i) == -1) {
+                            L.polygon(actionPackage.geometry[i].geometry.coordinates[0], {
+                                    fillColor: actionPackage.geometry.length == 1 ? $scope.getGradientColor(1) : $scope.getGradientColor(i / (actionPackage.geometry.length - 1)),
+                                    color: '#FFF',
+                                    weight: 1,
+                                    fillOpacity: 1,
+                                    index: actionPackage.featureId,
+                                    pane: 'isochronesPane'
+                                })
+                                .addTo(isochrones);
+                        }
+                    }
+                    $scope.opacityIsochrones();
+                    isochrones.addTo($scope.mapModel.geofeatures[actionPackage.layerCode]);
+                };
+                $scope.opacityIsochrones = () => {
+                    // hack to change opacity of entire overlaypane layer but prevent opacity of stroke
+                    let svg = d3.select($scope.mapModel.map.getPanes()
+                            .isochronesPane)
+                        .style("opacity", 0.5);
+                    svg.selectAll("path")
+                        .style("stroke-opacity", 1);
                 };
                 /** 
                  * clears layer entirely or specific layer in layer
@@ -942,7 +974,7 @@ angular.module('orsApp')
                     });
                 };
                 // add locations control
-                $scope.mapModel.map.addControl($scope.locationsControl());
+                //$scope.mapModel.map.addControl($scope.locationsControl());
                 /**
                  * Dispatches all commands sent by Mapservice by using id and then performing the corresponding function
                  */
@@ -993,6 +1025,9 @@ angular.module('orsApp')
                             break;
                         case 11:
                             $scope.highlightPoi(params._package);
+                            break;
+                        case 12:
+                            $scope.togglePolygonsIntervals(params._package);
                             break;
                         default:
                             break;
