@@ -213,6 +213,14 @@
         </span>
     </div>
     <div class="collapsable" ng-class="{ showMe: additionalOptions }">
+        <div class="ors-options-menu" ng-show="$ctrl.activeSubgroup == 'Pedestrian'">
+            <div class="ui checkbox">
+                <input id="landmarks" name="orsLandmarkInput" ng-change="$ctrl.changeOptions()" ng-model="$ctrl.currentOptions.landmarks" type="checkbox">
+                    <label for="landmarks" ng-bind-html="('SHOWLANDMARKS' | translate)">
+                    </label>
+                </input>
+            </div>
+        </div>
         <div class="ors-options-menu">
             <div class="ui checkbox">
                 <input id="maximumspeed" name="orsRouteMaximumspeedInput" ng-change="$ctrl.toggleMaxspeedSlider()" ng-model="$ctrl.maxspeedCheckbox" type="checkbox">
@@ -233,18 +241,10 @@
             <rzslider rz-slider-model="$ctrl.greenSlider.value" rz-slider-options="$ctrl.greenSlider.options">
             </rzslider>
         </div>
-        <div class="ors-options-menu" ng-show="$ctrl.activeSubgroup == 'Pedestrian'">
-            <div class="ui checkbox">
-                <input id="landmarks" name="orsLandmarkInput" ng-change="$ctrl.changeOptions()" ng-model="$ctrl.currentOptions.landmarks" type="checkbox">
-                    <label for="landmarks" ng-bind-html="('SHOWLANDMARKS' | translate)">
-                    </label>
-                </input>
-            </div>
-        </div>
         <div class="ors-options-menu">
             <div class="ui checkbox">
-                <input id="maximumspeed" name="orsRouteMaximumspeedInput" ng-change="$ctrl.toggleMaxspeedSlider()" ng-model="$ctrl.maxspeedCheckbox" type="checkbox">
-                    <label for="maximumspeed" ng-bind-html="('MAXIMUMSPEED' | translate)">
+                <input id="quietrouting" name="orsRouteMaximumspeedInput" ng-change="$ctrl.toggleQuietSlider()" ng-model="$ctrl.quietActive" type="checkbox">
+                    <label for="quietrouting" ng-bind-html="('QUIET_ROUTING' | translate)">
                     </label>
                 </input>
             </div>
