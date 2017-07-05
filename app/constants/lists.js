@@ -316,25 +316,30 @@ angular.module('orsApp')
                 },
             },
             hgvParams: {
-                Length: {
+                length: {
                     min: 2,
-                    max: 15
+                    max: 15,
+                    value: 'length'
                 },
-                Height: {
+                height: {
                     min: 2,
-                    max: 5
+                    max: 5,
+                    value: 'height'
                 },
-                Width: {
+                width: {
                     min: 2,
-                    max: 5
+                    max: 5,
+                    value: 'width'
                 },
-                Weight: {
+                hgvWeight: {
                     min: 1,
-                    max: 100
+                    max: 100,
+                    value: 'weight'
                 },
-                AxleLoad: {
+                axleload: {
                     min: 1,
-                    max: 100
+                    max: 100,
+                    value: 'axleload'
                 }
             },
             maxspeeds: {
@@ -530,7 +535,10 @@ angular.module('orsApp')
             tollroads: 'l6',
             tunnels: 'l7',
             tracks: 'l8',
-            green: 'm1'
+            green: 'm1',
+            lat: 'n1',
+            lng: 'n2',
+            zoom: 'n3'
         },
         reversePermalinkKeys: function(obj) {
             var rev = {};
@@ -612,12 +620,11 @@ angular.module('orsApp')
                 };
             },
             boundary: function() {
-                console.log('STYLE')
                 return {
                     "color": "#cf5f5f",
                     "weight": 10,
-                    "opacity": 0.5,
-                    //"fillOpacity": 0.5
+                    "opacity": 1,
+                    "fillOpacity": 0
                 };
             }
         },
@@ -746,5 +753,16 @@ angular.module('orsApp')
                     ]
                 }
             }]
+        },
+        measure_locale: {
+            'de-DE': 'de',
+            'en-US': 'en',
+            'en-GB': 'en_UK',
+            'zh-CN': 'cn',
+            'pt-PT': 'pt_PT',
+            'es-ES': 'es',
+            'ru-RU': 'ru',
+            'fr-FR': 'fr',
+            'pl-PL': 'pl'
         }
     });

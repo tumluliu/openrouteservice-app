@@ -139,6 +139,7 @@
     "CENTER": "Use as center", 
     "WELCOME": "Welcome to OpenRouteService.org", 
     "WELCOME_MESSAGE": "To add avoidable areas please use the control in the top right of the map. Otherwise feel free to browse through the plethora of options in the left panel. Also check out our new sochrones functionalities in the left menu panel.", 
+    "LABS_MESSAGE": "Welcome to the OpenRouteService labs project. Within this application you will find experimental features to play around with. Amongst these you will able to find:<br><br><strong>- Green routing</strong><br><strong>- Infield routing</strong><br><strong>- POI services</strong><br><br>and many more features to follow!",
     "EXTRAS": "Additional information", 
     "WHATSHERE": "What is here?", 
     "NO_ADDRESS": "No address could be found.", 
@@ -160,5 +161,8 @@
     "INFO_III": "In case you have any further questions, concerns or feedback, please contact us via e-mail:", 
     "INFO_IV": "OpenRouteService cares about your inquiries, problems, questions etc. As there will always be a stream of inquiries, we take strong responsibility to respond to you in short time. After you have received our automatic response email to let you know we have received your inquiry, we will usually respond shortly. Please give us time to look into your reported issue properly before getting back.", 
     "ADD_EXTRAS": "Add to map",
-    "SHOWLANDMARKS": "Include landmarks in routing instructions"
+    "SHOWLANDMARKS": "Include landmarks in routing instructions",
+    "GENERATE_ISOCHRONES": "Generate isochrones",
+    "DETOUR_FACTOR" : "Detour factor",
+    "PERCENTAGE_OF_ROUTE": "Percentage of route"
 }

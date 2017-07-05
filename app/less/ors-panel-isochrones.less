@@ -1,0 +1,73 @@
+.ors-analysis-settings {
+    flex: 0 1 auto;
+}
+
+.ors-aa-controls {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 10px;
+    div {
+        &:last-child {
+            margin-left: auto;
+        }
+    }
+}
+
+.ors-aa-options {
+    max-height: 450px;
+    overflow: auto;
+}
+
+.ors-aa-query, .ors-loading {
+    margin: 10px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.aa-input {
+    width: 340px;
+}
+
+.ors-aa-query {
+    .segment {
+        display: flex;
+        position: relative;
+        width: 100%;
+        flex-direction: row;
+        flex-wrap: wrap;
+        cursor: default;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        justify-content: space-between;
+        padding-bottom: 10px;
+        .summary {
+            flex: 0 1 auto;
+        }
+        .controls {
+            flex: 0 1 auto;
+            span {
+                float: right;
+                width: 20px;
+                text-align: center;
+            }
+        }
+        .icon {
+            flex: 0 1 15%;
+        }
+        .waypoint {
+            flex: 1 1 50%;
+            padding-left: 10px;
+        }
+        .segment.highlight {
+            color: rgb(0, 0, 0);
+            background-color: #FAFAFA;
+        }
+        tr.highlight {
+            background-color: #E8E8E8;
+        }
+    }
+}

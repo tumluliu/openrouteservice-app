@@ -1,11 +1,22 @@
 angular.module('orsApp.ors-filters', [])
     .filter('duration', () => {
         return (input) => {
-            let duration = new Date(input * 1000)
-                .toISOString()
-                .substr(11, 5);
-            if (duration == '00:00') return '<b>' + '< 1' + '</b>' + ' min';
-            else return '<b>' + duration + '</b>';
+            const hours = Math.floor(input / 3600);
+            input %= 3600;
+            const minutes = Math.floor(input / 60);
+            const seconds = input % 60;
+            if (hours < 1 && minutes < 1) {
+                return '<b>' + '< 1' + '</b>' + ' min';
+            } else {
+                let HHMM = [];
+                if (hours.toString()
+                    .length == 1) HHMM.push('0' + hours);
+                else HHMM.push(hours);
+                if (minutes.toString()
+                    .length == 1) HHMM.push('0' + minutes);
+                else HHMM.push(minutes);
+                return '<b>' + HHMM.join(':') + '</b>';
+            }
         };
     })
     .filter('distance', ['orsSettingsFactory', (orsSettingsFactory) => {
@@ -20,8 +31,10 @@ angular.module('orsApp.ors-filters', [])
                         input = (input / 1000)
                             .toFixed();
                     } else {
-                        input = (input / 1000)
-                            .toFixed(2);
+                        if (input >= 1000000) input = (input / 1000)
+                            .toFixed();
+                        else input = (input / 1000)
+                            .toFixed(1);
                     }
                     units = ' km';
                 } else {
@@ -34,7 +47,7 @@ angular.module('orsApp.ors-filters', [])
                         .toFixed();
                 } else {
                     input = (input * 0.000621371192)
-                        .toFixed(2);
+                        .toFixed(1);
                 }
                 if (input < 0.5 && input > 0.2) {
                     /** yards */

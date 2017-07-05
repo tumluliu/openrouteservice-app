@@ -13,7 +13,7 @@ module.exports = function(grunt) {
                 expand: true,
                 cwd: 'app',
                 dest: 'build',
-                src: ['img/**/*.png', 'includes/**/*.html', 'languages/**/*.json', 'components/**/*.html', 'css/*.css', '*.html', '*.js', 'favicon.ico']
+                src: ['img/**/*.png', 'languages/**/*.json', 'css/*.css', '*.html', '*.js', 'favicon.ico']
             },
             libs: {
                 expand: true,
@@ -26,14 +26,16 @@ module.exports = function(grunt) {
             options: {
                 livereload: true,
             },
-            css: {
-                files: ['app/css/**/*.css'],
+            less: {
+                files: ['app/less/**/*.less'],
+                tasks: ['less:development']
             },
             js: {
                 files: ['app/**/*.js']
             },
             html: {
-                files: ['app/**/*.html']
+                files: ['app/**/*.html'],
+                tasks: ['ngtemplates']
             }
         },
         // Clean stuff up
@@ -42,7 +44,7 @@ module.exports = function(grunt) {
                 src: ['build/*']
             },
             task_rm_build_unused: {
-                src: ['build/components/**/*.js', 'build/infrastructure', 'build/js/', 'build/constants', 'build/css']
+                src: ['build/components', 'build/infrastructure', 'build/js/', 'build/constants', 'build/css']
             },
         },
         jshint: {
@@ -251,7 +253,8 @@ module.exports = function(grunt) {
                         tmc: 'http://labs-api.openrouteservice.org/ors/routes?tmc',
                         analyse: 'https://labs-api.openrouteservice.org/ors/isochrones',
                         places: 'https://labs-api.openrouteservice.org/ors/locations',
-                        shortenlink: 'https://api-ssl.bitly.com/v3/shorten'
+                        shortenlink: 'https://api-ssl.bitly.com/v3/shorten',
+			landmarks: 'http://129.206.7.124:8080/ORS-LandmarkService-1.0/api/Landmark'
                     }
                 }
             }
@@ -261,6 +264,47 @@ module.exports = function(grunt) {
                 files: {
                     'build/scripts.js': 'build/scripts.js'
                 }
+            }
+        },
+        cacheBust: {
+            taskName: {
+                options: {
+                    assets: ['scripts.js', 'vendor.js', 'main.css', 'vendor.css'],
+                    baseDir: './build',
+                    deleteOriginals: true
+                },
+                src: ['./build/index.html']
+            }
+        },
+        // TODO
+        less: {
+            development: {
+                files: {
+                    "app/css/ors-layout.css": "app/less/ors-layout.less",
+                    "app/css/ors-leaflet.css": "app/less/ors-leaflet.less",
+                    "app/css/ors-common.css": "app/less/ors-common.less",
+                    "app/css/ors-header.css": "app/less/ors-header.less",
+                    "app/css/ors-error.css": "app/less/ors-error.less",
+                    "app/css/ors-icons.css": "app/less/ors-icons.less",
+                    "app/css/ors-instructions.css": "app/less/ors-instructions.less",
+                    "app/css/ors-loading.css": "app/less/ors-loading.less",
+                    "app/css/ors-modal.css": "app/less/ors-modal.less",
+                    "app/css/ors-locations.css": "app/less/ors-locations.less",
+                    "app/css/ors-extras.css": "app/less/ors-extras.less",
+                    "app/css/ors-nav-profiles.css": "app/less/ors-nav-profiles.less",
+                    "app/css/ors-panel-isochrones.css": "app/less/ors-panel-isochrones.less",
+                    "app/css/ors-panel-routing.css": "app/less/ors-panel-routing.less",
+                    "app/css/ors-sidebar-outlet.css": "app/less/ors-sidebar-outlet.less",
+                    "app/css/ors-tooltips.css": "app/less/ors-tooltips.less",
+		    "app/css/ors-landmark.css": "app/less/ors-landmark.less"
+                }
+            }
+        },
+        ngtemplates: {
+            orsApp: {
+                cwd: 'app',
+                src: ['components/**/*.html', 'includes/**/*.html'],
+                dest: 'app/js/templates.js'
             }
         }
         // connect: {
@@ -310,6 +354,7 @@ module.exports = function(grunt) {
         //     }
         // }
     });
+    grunt.loadNpmTasks('grunt-cache-bust');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-htmlhint');
     grunt.loadNpmTasks("grunt-contrib-copy");
@@ -328,27 +373,11 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-browserify');
     grunt.loadNpmTasks('grunt-ng-constant');
     grunt.loadNpmTasks('grunt-strip-debug');
-    // Clean the .git/hooks/pre-commit file then copy in the latest version 
-    //grunt.registerTask('build', 'Compiles all of the assets and copies the files to the build directory.', ['clean:task_rm_build', 'copy:build', 'removelogging', 'preprocess', 'traceur', 'useminPrepare', 'concat', 'uglify', 'cssmin', 'usemin', 'clean:task_rm_build_unused']);
-    //   grunt.registerTask('build', [
-    //   'clean:dist',
-    //   'traceur',
-    //   'useminPrepare',
-    //   'concurrent:dist',
-    //   'autoprefixer',
-    //   'concat',
-    //   'ngAnnotate',
-    //   'copy:dist',
-    //   'cdnify',
-    //   'cssmin',
-    //   'uglify',
-    //   'filerev',
-    //   'usemin',
-    //   'htmlmin'
-    // ]);
-    grunt.registerTask('test', 'Compiles all of the assets and copies the files to the build directory.', ['browserify:turf', 'clean:task_rm_build', 'copy:build', 'traceur', 'useminPrepare', 'concat', 'copy:libs', 'uglify', 'cssmin', 'usemin', 'preprocess', 'tags', 'ngconstant:development', 'clean:task_rm_build_unused', 'stripDebug']);
-    grunt.registerTask('build', 'Compiles all of the assets and copies the files to the build directory.', ['browserify:turf', 'clean:task_rm_build', 'copy:build', 'ngconstant:production', 'traceur', 'useminPrepare', 'concat', 'copy:libs', 'uglify', 'cssmin', 'usemin', 'preprocess', 'tags', 'ngconstant:development', 'clean:task_rm_build_unused', 'stripDebug', 'connect:build:keepalive']);
-    grunt.registerTask('serve', 'Run local server', ['browserify:turf', 'ngconstant:development', 'connect:dev', 'watch']);
-    grunt.registerTask('buildlabs', 'Compiles all of the assets and copies the files to the build directory.', ['browserify:turf', 'clean:task_rm_build', 'copy:build', 'ngconstant:labs', 'traceur', 'useminPrepare', 'concat', 'copy:libs', 'uglify', 'cssmin', 'usemin', 'preprocess', 'tags', 'ngconstant:labs', 'clean:task_rm_build_unused', 'stripDebug', 'connect:build:keepalive']);
+    grunt.loadNpmTasks('grunt-contrib-less');
+    grunt.loadNpmTasks('grunt-angular-templates');
+    grunt.registerTask('staging', 'Compiles all of the assets and copies the files to the build directory.', ['browserify:turf', 'ngtemplates', 'clean:task_rm_build', 'copy:build', 'ngconstant:development', 'traceur', 'useminPrepare', 'concat', 'copy:libs', 'uglify', 'cssmin', 'usemin', 'preprocess', 'tags', 'clean:task_rm_build_unused', 'stripDebug', 'cacheBust', 'connect:build:keepalive']);
+    grunt.registerTask('build', 'Compiles all of the assets and copies the files to the build directory.', ['browserify:turf', 'ngtemplates', 'clean:task_rm_build', 'copy:build', 'ngconstant:production', 'traceur', 'useminPrepare', 'concat', 'copy:libs', 'uglify', 'cssmin', 'usemin', 'preprocess', 'tags', 'ngconstant:development', 'clean:task_rm_build_unused', 'stripDebug', 'cacheBust', 'connect:build:keepalive']);
+    grunt.registerTask('serve', 'Run local server', ['less:development', 'browserify:turf', 'ngtemplates', 'ngconstant:development', 'connect:dev', 'watch']);
+    grunt.registerTask('buildlabs', 'Compiles all of the assets and copies the files to the build directory.', ['browserify:turf', 'ngtemplates', 'clean:task_rm_build', 'copy:build', 'ngconstant:labs', 'traceur', 'useminPrepare', 'concat', 'copy:libs', 'uglify', 'cssmin', 'usemin', 'preprocess', 'tags', 'ngconstant:labs', 'clean:task_rm_build_unused', 'stripDebug', 'cacheBust', 'connect:build:keepalive']);
     grunt.registerTask('servelabs', 'Run local server', ['browserify:turf', 'ngconstant:labs', 'connect:dev', 'watch']);
 };

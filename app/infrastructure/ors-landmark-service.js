@@ -85,7 +85,7 @@ angular.module('orsApp.landmark-service', []).factory('orsLandmarkService', ['$q
         };
     
     orsLandmarkService.addLandmark = (landmark) => {
-        let action = orsObjectsFactory.createMapAction(12, lists.layers[9], landmark, undefined, undefined);
+        let action = orsObjectsFactory.createMapAction(13, lists.layers[9], landmark, undefined, undefined);
         orsMapFactory.mapServiceSubject.onNext(action);
     };
     

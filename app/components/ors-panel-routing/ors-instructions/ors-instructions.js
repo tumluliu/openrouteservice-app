@@ -11,6 +11,7 @@ angular.module('orsApp.ors-instructions', ['orsApp.ors-exportRoute-controls']).c
         ctrl.routeIndex = orsRouteService.getCurrentRouteIdx();
         ctrl.data = orsRouteService.data;
         $scope.route = ctrl.route = ctrl.data.routes[ctrl.routeIndex];
+        console.error($scope.route)
         /** subscribe to route object if instructions are already open */
         /** if we are returning to this panel, dispose all old subscriptions */
         try {
@@ -95,6 +96,7 @@ angular.module('orsApp.ors-instructions', ['orsApp.ors-exportRoute-controls']).c
         ctrl.EmphStepLm = (lms) => {
             if(lms && lms.features.length > 0) {
                 const lm = lms.features[0];
+                
                 if(lm.properties.suitability > 0) {
                     orsRouteService.EmphLandmark(lm);
                 }

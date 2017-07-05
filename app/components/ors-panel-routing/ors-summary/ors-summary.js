@@ -7,12 +7,19 @@ angular.module('orsApp.ors-summary', ['orsApp.ors-exportRoute-controls', 'orsApp
         },
         controller: ['$rootScope', 'orsSettingsFactory', 'orsMapFactory', 'orsObjectsFactory', 'orsRouteService', 'lists', function($rootScope, orsSettingsFactory, orsMapFactory, orsObjectsFactory, orsRouteService, lists) {
             let ctrl = this;
+            
+            ctrl.showShare = false;
+            ctrl.showExport = false;
             ctrl.profiles = lists.profiles;
             ctrl.setIdx = (idx) => {
                 orsRouteService.setCurrentRouteIdx(idx);
             };
             ctrl.getIdx = () => {
                 return orsRouteService.getCurrentRouteIdx();
+            };
+            ctrl.getClass = (bool) => {
+                if (bool === true) return "fa fa-lg fa-fw fa-angle-down";
+                else return "fa fa-lg fa-fw fa-angle-right";
             };
             /** if we are coming back to route panel */
             if (angular.isDefined(orsRouteService.data) && angular.isDefined(orsRouteService.data.routes)) {
@@ -25,8 +32,7 @@ angular.module('orsApp.ors-summary', ['orsApp.ors-exportRoute-controls', 'orsApp
                         const hgGeojson = orsRouteService.processHeightgraphData(ctrl.route);
                         orsRouteService.addHeightgraph(hgGeojson);
                     }
-                      orsRouteService.addRoute(ctrl.route.geometry);
-                    
+                    orsRouteService.addRoute(ctrl.route.geometry);
                 }
             }
             /** if we are returning to this panel, dispose all old subscriptions */
