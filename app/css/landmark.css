@@ -1,0 +1,22 @@
+.ors-marker-landmark, .ors-marker-landmark-highlight {
+    text-align: center;
+    line-height: 100%;
+}
+
+.ors-marker-landmark i {
+    width: 100%;
+    height: 100%;
+    font-size: 40px;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: #FFF;
+    -webkit-text-fill-color: orange;
+}
+
+.ors-marker-landmark-highlight i {
+    width: 100%;
+    height: 100%;
+    font-size: 40px;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: #FFF;
+    -webkit-text-fill-color: blue;
+}

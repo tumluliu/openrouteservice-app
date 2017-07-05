@@ -45,7 +45,9 @@ angular.module('orsApp')
                     layerRouteNumberedMarkers: L.featureGroup(),
                     layerRouteExtras: L.featureGroup(),
                     layerLocations: L.featureGroup(),
-                    layerBoundaries: L.featureGroup()
+                    layerBoundaries: L.featureGroup(),
+                    layerLandmarks: L.featureGroup(),
+                    layerLandmarksEmph: L.featureGroup()
                 };
                 L.geoJSON(lists.boundary, {
                         style: lists.layerStyles.boundary()
@@ -59,7 +61,7 @@ angular.module('orsApp')
                 };
                 $scope.mapModel.map.createPane('isochronesPane');
                 /* HEIGHTGRAPH CONTROLLER */
-                $scope.hg = L.control.heightgraph({
+                $scope.hg = null;/*L.control.heightgraph({
                     width: 800,
                     height: 280,
                     margins: {
@@ -70,7 +72,7 @@ angular.module('orsApp')
                     },
                     position: "bottomright",
                     mappings: mappings
-                });
+                });*/
                 $scope.zoomControl = new L.Control.Zoom({
                         position: 'topright'
                     })
@@ -168,6 +170,8 @@ angular.module('orsApp')
                     $scope.mapModel.geofeatures.layerRouteExtras.addTo($scope.mapModel.map);
                     $scope.mapModel.geofeatures.layerLocations.addTo($scope.mapModel.map);
                     $scope.mapModel.geofeatures.layerBoundaries.addTo($scope.mapModel.map);
+                    $scope.mapModel.geofeatures.layerLandmarks.addTo($scope.mapModel.map);
+                    $scope.mapModel.geofeatures.layerLandmarksEmph.addTo($scope.mapModel.map);
                     // add layer control
                     $scope.layerControls = L.control.layers($scope.baseLayers, $scope.overlays)
                         .addTo($scope.mapModel.map);
@@ -601,6 +605,9 @@ angular.module('orsApp')
                     $scope.mapModel.geofeatures.layerRouteLines.clearLayers();
                     $scope.mapModel.geofeatures.layerEmph.clearLayers();
                     $scope.mapModel.geofeatures.layerRouteExtras.clearLayers();
+                    $scope.mapModel.geofeatures.layerLandmarks.clearLayers();
+                    $scope.mapModel.geofeatures.layerLandmarksEmph.clearLayers();
+                    
                     if ($scope.hg) $scope.hg.remove();
                     if (switchApp) {
                         $scope.mapModel.geofeatures.layerRoutePoints.clearLayers();
@@ -749,6 +756,7 @@ angular.module('orsApp')
                             className: 'location-popup'
                         });
                     };
+                    console.log(actionPackage.geometry);
                     let geojson = L.geoJson(actionPackage.geometry, {
                             pointToLayer: function(feature, latlng) {
                                 let locationsIcon = L.divIcon(lists.locationsIcon);
@@ -760,6 +768,41 @@ angular.module('orsApp')
                             onEachFeature: onEachFeature
                         })
                         .addTo($scope.mapModel.geofeatures[actionPackage.layerCode]);
+                };
+                /**
+                 * add a point feature to the map as a landmark
+                 * @param {Object} actionPackage - The action actionPackage
+                 */
+                $scope.addLandmark = (actionPackage) => {   
+                    const onEachFeature = (feature, layer) => {
+                        let popupContent = '';
+                        if(feature.properties.name && feature.properties.name !== 'Unknown')
+                            popupContent = '<strong>' + feature.properties.name + ' ' + feature.properties.suitability + '</strong>';
+                        else
+                            popupContent = '<strong>' + feature.properties.type.replace(/_/, ' ') + ' ' + feature.properties.suitability + '</strong>';
+                        layer.bindPopup(popupContent, {
+                            className: 'location-popup'
+                        });
+                    };
+                    
+                    let geojson = L.geoJson(actionPackage.geometry, {
+                        pointToLayer: function(feature, latlng) {
+                            let locationsIcon = null;
+                            if(actionPackage.style) {
+                                locationsIcon = L.divIcon(actionPackage.style);
+                            } else { 
+                                locationsIcon = L.divIcon(lists.landmarkIcon);
+                            }
+                            
+                            locationsIcon.options.html = '<i class="fa fa-map-marker">&nbsp;</i>';
+                            return L.marker(latlng, {
+                                icon: locationsIcon,
+                                draggable: 'false'
+                            });
+                        },
+                        onEachFeature: onEachFeature
+                    })
+                    .addTo($scope.mapModel.geofeatures[actionPackage.layerCode]);
                 };
                 /** 
                  * adds features to specific layer
@@ -917,7 +960,7 @@ angular.module('orsApp')
                  */
                 orsMapFactory.subscribeToMapFunctions(function onNext(params) {
                     switch (params._actionCode) {
-                        case -1:
+                        /*case -1:
                             $scope.mapModel.map.addControl($scope.hg);
                             if (params._package.geometry) {
                                 $scope.hg.addData(params._package.geometry);
@@ -962,6 +1005,9 @@ angular.module('orsApp')
                             break;
                         case 11:
                             $scope.highlightPoi(params._package);
+                            break;
+                        case 12:
+                            $scope.addLandmark(params._package);
                             break;
                         default:
                             break;

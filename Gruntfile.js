@@ -218,7 +218,8 @@ module.exports = function(grunt) {
                         tmc: 'http://129.206.228.188:8080/ors/routes?tmc',
                         analyse: 'http://129.206.7.188:8080/ors/isochrones',
                         places: 'http://129.206.7.188:8080/ors/locations',
-                        shortenlink: 'https://api-ssl.bitly.com/v3/shorten'
+                        shortenlink: 'https://api-ssl.bitly.com/v3/shorten',
+			landmarks: 'http://129.206.7.124:8080/ORS-LandmarkService-1.0/api/Landmark'
                     }
                 },
             },

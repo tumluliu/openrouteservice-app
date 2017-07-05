@@ -338,6 +338,7 @@ angular.module('orsApp.ors-options', [])
                         }
                     }
                 };
+                
             };
             ctrl.avoidHillsCheckbox = () => {
                 let avoidhillsCheckbox = angular.element(document.querySelector('#cb-avoidhills'));

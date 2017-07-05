@@ -38,6 +38,16 @@ angular.module('orsApp')
                 iconAnchor: [22, 45]
             }
         },
+        landmarkIcon: {
+            className: "ors-marker-landmark",
+            iconSize: [45, 45],
+            iconAnchor: [22, 45]
+        },
+        landmarkIconEmph: {
+            className: "ors-marker-landmark-highlight",
+            iconSize: [45, 45],
+            iconAnchor: [22, 45]
+        },
         profiles: {
             Car: {
                 name: 'Car',
@@ -155,6 +165,12 @@ angular.module('orsApp')
             }
         },
         optionList: {
+            landmarks: {
+                Include: {
+                    name: 'include',
+                    subgroups: ['Wheelchair', 'Pedestrian']
+                }
+            },
             weight: {
                 Fastest: {
                     value: 'Fastest',
@@ -532,7 +548,9 @@ angular.module('orsApp')
             5: 'layerAccessibilityAnalysisNumberedMarkers',
             6: 'layerRouteNumberedMarkers',
             7: 'layerRouteExtras',
-            8: 'layerLocations'
+            8: 'layerLocations',
+            9: 'layerLandmarks',
+            10: 'layerLandmarksEmph'
         },
         layerStyles: {
             route: function() {

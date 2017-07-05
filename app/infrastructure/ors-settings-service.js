@@ -195,7 +195,7 @@ angular.module('orsApp.settings-service', [])
                 request.promise.then(function(response) {
                     orsSettingsFactory.requestSubject.onNext(false);
                     const profile = settings.profile.type;
-                    orsRouteService.processResponse(response, profile, orsSettingsFactory.focusIdx);
+                    orsRouteService.processResponse(response, profile, orsSettingsFactory.focusIdx, settings.profile.options.landmarks);
                 }, function(response) {
                     console.error(response);
                     orsSettingsFactory.requestSubject.onNext(false);
