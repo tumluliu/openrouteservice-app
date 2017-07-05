@@ -63,6 +63,43 @@ a.leaflet-locations {
     padding: 8px;
 }
 
+.locations {
+    position: absolute;
+    right: 50px;
+    top: -2px;
+    height: auto;
+    >div {
+        border-radius: 0px;
+        background-color: #FFF;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+        -padding: 5px;
+        margin-bottom: 5px;
+        background-clip: padding-box;
+        width: 300px;
+    }
+    .categories {
+        .c-list {
+            .ui.grid {
+                margin-top: 0;
+                margin-bottom: 0;
+                margin-left: 0;
+                margin-right: 0;
+            }
+        }
+        .category {
+            display: flex !important;
+            flex-direction: row;
+            justify-content: space-between;
+            &:hover {
+                color: #cf5f5f;
+            }
+        }
+        .category-checkbox {
+            margin-top: -5px;
+        }
+    }
+}
+
 .result-list {
     max-height: 200px;
     overflow: visible;
@@ -100,44 +137,6 @@ a.leaflet-locations {
                     width: 0px !important;
                     height: 0px !important;
                     line-height: inherit !important;
-                }
-                .locations {
-                    position: absolute;
-                    right: 50px;
-                    top: -2px;
-                    height: auto;
-                    >div {
-                        border-radius: 0px;
-                        background-color: #FFF;
-                        box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-                        -padding: 5px;
-                        margin-bottom: 5px;
-                        background-clip: padding-box;
-                        width: 300px;
-                    }
-                    .categories {
-                        .c-list {
-                            .ui.grid {
-                                margin-top: 0;
-                                margin-bottom: 0;
-                                margin-left: 0;
-                                margin-right: 0;
-                            }
-                        }
-                        .category {
-                            display: flex !important;
-                            flex-direction: row;
-                            justify-content: space-between;
-                            -border-left: .1rem solid #d9d9d9;
-                            -border-bottom: .1rem solid #d9d9d9;
-                        }
-                        &:hover {
-                            color: #cf5f5f;
-                        }
-                        .category-checkbox {
-                            margin-top: -5px;
-                        }
-                    }
                 }
             }
         }
