@@ -254,7 +254,7 @@ module.exports = function(grunt) {
                         analyse: 'https://labs-api.openrouteservice.org/ors/isochrones',
                         places: 'https://labs-api.openrouteservice.org/ors/locations',
                         shortenlink: 'https://api-ssl.bitly.com/v3/shorten',
-			landmarks: 'http://129.206.7.124:8080/ORS-LandmarkService-1.0/api/Landmark'
+			landmarks: 'https://landmarks-api.openrouteservice.org/'
                     }
                 }
             }
