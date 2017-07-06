@@ -221,7 +221,7 @@ module.exports = function(grunt) {
                         analyse: 'http://129.206.7.188:8080/ors/isochrones',
                         places: 'http://129.206.7.188:8080/ors/locations',
                         shortenlink: 'https://api-ssl.bitly.com/v3/shorten',
-			landmarks: 'http://129.206.7.124:8080/ORS-LandmarkService-1.0/api/Landmark'
+                        landmarks: 'http://129.206.7.124:8080/ORS-LandmarkService-1.0/api/Landmark'
                     }
                 },
             },
@@ -254,7 +254,7 @@ module.exports = function(grunt) {
                         analyse: 'https://labs-api.openrouteservice.org/ors/isochrones',
                         places: 'https://labs-api.openrouteservice.org/ors/locations',
                         shortenlink: 'https://api-ssl.bitly.com/v3/shorten',
-			landmarks: 'http://129.206.7.124:8080/ORS-LandmarkService-1.0/api/Landmark'
+                        landmarks: 'http://129.206.7.124:8080/ORS-LandmarkService-1.0/api/Landmark'
                     }
                 }
             }
@@ -296,7 +296,7 @@ module.exports = function(grunt) {
                     "app/css/ors-panel-routing.css": "app/less/ors-panel-routing.less",
                     "app/css/ors-sidebar-outlet.css": "app/less/ors-sidebar-outlet.less",
                     "app/css/ors-tooltips.css": "app/less/ors-tooltips.less",
-		    "app/css/ors-landmark.css": "app/less/ors-landmark.less"
+                    "app/css/ors-landmark.css": "app/less/ors-landmark.less"
                 }
             }
         },

@@ -7,7 +7,7 @@ angular.module('orsApp')
                 orsMap: '='
             },
             link: (scope, element, attrs) => {},
-            controller: ['$scope', '$filter', '$compile', '$timeout', 'orsSettingsFactory', 'orsLocationsService', 'orsObjectsFactory', 'orsRequestService', 'orsUtilsService', 'orsMapFactory', 'orsCookiesFactory', 'lists', 'mappings', 'orsNamespaces', ($scope, $filter, $compile, $timeout, orsSettingsFactory, orsLocationsService, orsObjectsFactory, orsRequestService, orsUtilsService, orsMapFactory, orsCookiesFactory, lists, mappings, orsNamespaces) => {
+            controller: ['$scope', '$filter', '$compile', '$timeout', '$interval', 'orsSettingsFactory', 'orsLocationsService', 'orsObjectsFactory', 'orsRequestService', 'orsUtilsService', 'orsTmcService', 'orsMapFactory', 'orsCookiesFactory', 'lists', 'tmcLists', 'mappings', 'orsNamespaces', ($scope, $filter, $compile, $timeout, $interval, orsSettingsFactory, orsLocationsService, orsObjectsFactory, orsRequestService, orsUtilsService, orsTmcService, orsMapFactory, orsCookiesFactory, lists, tmcLists, mappings, orsNamespaces) => {
                 $scope.translateFilter = $filter('translate');
                 const mapsurfer = L.tileLayer(orsNamespaces.layerMapSurfer.url, {
                     attribution: orsNamespaces.layerMapSurfer.attribution
@@ -48,7 +48,7 @@ angular.module('orsApp')
                     layerBoundaries: L.featureGroup(),
                     layerLandmarks: L.featureGroup(),
                     layerLandmarksEmph: L.featureGroup(),
-                    layerTmcMarker: L.featureGroup()
+                    layerTmc: L.featureGroup()
                 };
                 L.geoJSON(lists.boundary, {
                         style: lists.layerStyles.boundary()
@@ -72,18 +72,19 @@ angular.module('orsApp')
                     })
                     .addTo($scope.mapModel.map);
                 /* HEIGHTGRAPH CONTROLLER */
-                $scope.hg = null;/*L.control.heightgraph({
-                    width: 800,
-                    height: 280,
-                    margins: {
-                        top: 10,
-                        right: 30,
-                        bottom: 55,
-                        left: 50
-                    },
-                    position: "bottomright",
-                    mappings: mappings
-                });*/
+                $scope.hg = null;
+                /*L.control.heightgraph({
+                                    width: 800,
+                                    height: 280,
+                                    margins: {
+                                        top: 10,
+                                        right: 30,
+                                        bottom: 55,
+                                        left: 50
+                                    },
+                                    position: "bottomright",
+                                    mappings: mappings
+                                });*/
                 $scope.zoomControl = new L.Control.Zoom({
                         position: 'topright'
                     })
@@ -223,6 +224,7 @@ angular.module('orsApp')
                     $scope.mapModel.geofeatures.layerBoundaries.addTo($scope.mapModel.map);
                     $scope.mapModel.geofeatures.layerLandmarks.addTo($scope.mapModel.map);
                     $scope.mapModel.geofeatures.layerLandmarksEmph.addTo($scope.mapModel.map);
+                    $scope.mapModel.geofeatures.layerTmc.addTo($scope.mapModel.map);
                     // add layer control
                     $scope.layerControls = L.control.layers($scope.baseLayers, $scope.overlays)
                         .addTo($scope.mapModel.map);
@@ -275,10 +277,16 @@ angular.module('orsApp')
                             .style("opacity", 1);
                     }
                     $scope.setMapOptions();
+                    $scope.resetTmcInterval();
                 });
                 $scope.mapModel.map.on('moveend', (e) => {
                     $scope.setMapOptions();
+                    $scope.resetTmcInterval();
                 });
+                $scope.resetTmcInterval = () => {
+                    $interval.cancel($scope.tmcInterval);
+                    $scope.tmcInterval = $interval(getTmc, 60000);
+                };
                 $scope.setMapOptions = () => {
                     const mapCenter = $scope.mapModel.map.getCenter();
                     const mapZoom = $scope.mapModel.map.getZoom();
@@ -364,7 +372,6 @@ angular.module('orsApp')
                     $scope.mapModel.geofeatures.layerRouteExtras.clearLayers();
                     $scope.mapModel.geofeatures.layerLandmarks.clearLayers();
                     $scope.mapModel.geofeatures.layerLandmarksEmph.clearLayers();
-                    
                     if ($scope.hg) $scope.hg.remove();
                     if (switchApp) {
                         $scope.mapModel.geofeatures.layerRoutePoints.clearLayers();
@@ -530,36 +537,32 @@ angular.module('orsApp')
                  * add a point feature to the map as a landmark
                  * @param {Object} actionPackage - The action actionPackage
                  */
-                $scope.addLandmark = (actionPackage) => {   
+                $scope.addLandmark = (actionPackage) => {
                     const onEachFeature = (feature, layer) => {
                         let popupContent = '';
-                        if(feature.properties.name && feature.properties.name !== 'Unknown')
-                            popupContent = '<strong>' + feature.properties.name + '</strong>';
-                        else
-                            popupContent = '<strong>' + feature.properties.type.replace(/_/, ' ') + '</strong>';
+                        if (feature.properties.name && feature.properties.name !== 'Unknown') popupContent = '<strong>' + feature.properties.name + '</strong>';
+                        else popupContent = '<strong>' + feature.properties.type.replace(/_/, ' ') + '</strong>';
                         layer.bindPopup(popupContent, {
                             className: 'location-popup'
                         });
                     };
-                    
                     let geojson = L.geoJson(actionPackage.geometry, {
-                        pointToLayer: function(feature, latlng) {
-                            let locationsIcon = null;
-                            if(actionPackage.style) {
-                                locationsIcon = L.divIcon(actionPackage.style);
-                            } else { 
-                                locationsIcon = L.divIcon(lists.landmarkIcon);
-                            }
-                            
-                            locationsIcon.options.html = '<i class="fa fa-map-marker">&nbsp;</i>';
-                            return L.marker(latlng, {
-                                icon: locationsIcon,
-                                draggable: 'false'
-                            });
-                        },
-                        onEachFeature: onEachFeature
-                    })
-                    .addTo($scope.mapModel.geofeatures[actionPackage.layerCode]);
+                            pointToLayer: function(feature, latlng) {
+                                let locationsIcon = null;
+                                if (actionPackage.style) {
+                                    locationsIcon = L.divIcon(actionPackage.style);
+                                } else {
+                                    locationsIcon = L.divIcon(lists.landmarkIcon);
+                                }
+                                locationsIcon.options.html = '<i class="fa fa-map-marker">&nbsp;</i>';
+                                return L.marker(latlng, {
+                                    icon: locationsIcon,
+                                    draggable: 'false'
+                                });
+                            },
+                            onEachFeature: onEachFeature
+                        })
+                        .addTo($scope.mapModel.geofeatures[actionPackage.layerCode]);
                 };
                 /** 
                  * adds features to specific layer
@@ -746,6 +749,7 @@ angular.module('orsApp')
                         orsMessagingService.messageSubject.onNext(lists.errors.GEOCODE);
                     });
                 };
+                // LOCATIONS API
                 $scope.locationsControl = () => {
                     return L.control.angular({
                         position: 'topright',
@@ -985,7 +989,6 @@ angular.module('orsApp')
                                 $scope.showSubcategories = $scope.showSubcategories === true ? false : true;
                             };
                             $scope.EmphPoi = (geometry, category) => {
-                                console.log('emph')
                                 orsLocationsService.emphPoi(geometry, category);
                             };
                             $scope.DeEmphPoi = () => {
@@ -1029,8 +1032,127 @@ angular.module('orsApp')
                         }
                     });
                 };
-                // add locations control
                 $scope.mapModel.map.addControl($scope.locationsControl());
+                // TMC API
+                $scope.tmcIcons = {};
+                for (const key in tmcLists.tmcCodes) {
+                    for (let i = 0; i < tmcLists.tmcCodes[key].length; i++) {
+                        if (key == 'UNDEFINED') $scope.tmcIcons[tmcLists.tmcCodes[key][i]] = ['img/warning_undefined.png', '#EF0013'];
+                        if (key == 'WARNING') $scope.tmcIcons[tmcLists.tmcCodes[key][i]] = ['img/warning_undefined.png', '#EF0013'];
+                        if (key == 'STATIONARY_TRAFFIC') $scope.tmcIcons[tmcLists.tmcCodes[key][i]] = ['img/warning_stationary_traffic.png', '#A7000C'];
+                        if (key == 'SLOW_TRAFFIC') $scope.tmcIcons[tmcLists.tmcCodes[key][i]] = ['img/warning_slow_traffic.png', '#FF3916'];
+                        if (key == 'NORMAL_TRAFFIC') $scope.tmcIcons[tmcLists.tmcCodes[key][i]] = ['img/warning_normal_traffic.png', '#0CB20C'];
+                        if (key == 'ROADWORKS') $scope.tmcIcons[tmcLists.tmcCodes[key][i]] = ['img/warning_roadworks.png', '#A5A5A5'];
+                        if (key == 'PARTIALLY_CLOSED') $scope.tmcIcons[tmcLists.tmcCodes[key][i]] = ['img/warning_road_part_closed.png', '#BCBCBC'];
+                        if (key == 'COMPLETELY_CLOSED') $scope.tmcIcons[tmcLists.tmcCodes[key][i]] = ['img/warning_road_closed.png', '#A5A5A5'];
+                    }
+                }
+                $scope.tmcWarnings = new L.MarkerClusterGroup({
+                    showCoverageOnHover: false,
+                    disableClusteringAtZoom: 12
+                });
+                $scope.tmcInterval = $interval(getTmc, 6000);
+
+                function getTmc() {
+                    console.log(true)
+                    const request = orsTmcService.fetchTmc({
+                        request: 'tmc',
+                        bbox: $scope.mapModel.map.getBounds()
+                            .toBBoxString()
+                    });
+                    request.promise.then(function(response) {
+                        $scope.updateTmcInformation(response);
+                    }, function(response) {
+                        console.error(response);
+                    });
+                }
+                $scope.updateTmcInformation = (data) => {
+                    // clear tmc layer
+                    $scope.geofeatures.layerTmc.clearLayers();
+                    $scope.tmcGeojson = L.geoJson(data, {
+                            onEachFeature: $scope.onEachTmcFeature,
+                            style: $scope.style
+                        })
+                        .addTo($scope.geofeatures.layerTmc);
+                    $scope.geofeatures.layerTmc.addLayer($scope.tmcWarnings);
+                    // bring tmc layer to front
+                    $scope.geofeatures.bringToFront();
+                };
+                $scope.onEachTmcFeature = (feature, layer) => {
+                    layer.on({
+                        mouseover: highlightTmcFeature,
+                        mouseout: resetTmcHighlight,
+                        click: zoomToFeatureShowPopup
+                    });
+                    let tmcIcon = L.icon({
+                        iconUrl: $scope.getTmcWarning(feature.properties.codes),
+                        iconAnchor: [11, 11],
+                        iconSize: [22, 22],
+                    });
+                    let tmcMarker = L.marker($scope.getIconLocation(feature), {
+                            icon: tmcIcon
+                        })
+                        .bindPopup(feature.properties.message); //.addTo(tmcLayer);
+                    tmcWarnings.addLayer(tmcMarker);
+                };
+                $scope.getTmcColor = (d) => {
+                    let codes = d.split(',');
+                    let warningColor;
+                    for (let i = 0; i < codes.length; i++) {
+                        if (codes[i] in $scope.tmcIcons) {
+                            warningColor = $scope.tmcIcons[codes[i]][1];
+                            break;
+                        }
+                    }
+                    // if codes not in dict return default
+                    warningColor = warningColor !== undefined ? warningColor : '#EF0013';
+                    return warningColor;
+                };
+                $scope.getTmcWarning = (d) => {
+                    var codes = d.split(',');
+                    for (var i = 0; i < codes.length; i++) {
+                        if (codes[i] in $scope.tmcIcons) {
+                            warningIcon = $scope.tmcIcons[codes[i]][0];
+                            break;
+                        }
+                    }
+                    // if codes not in dict return default
+                    var warningIcon = warningIcon !== undefined ? warningIcon : './img/warning_undefined.png';
+                    return warningIcon;
+                };
+                $scope.style = (feature) => {
+                    return {
+                        weight: 5,
+                        opacity: 1.0,
+                        color: $scope.getTmcColor(feature.properties.codes)
+                    };
+                };
+                $scope.highlightTmcFeature = (e) => {
+                    let layer = e.target;
+                    layer.setStyle({
+                        weight: 7,
+                        opacity: 1
+                    });
+                    if (!L.Browser.ie && !L.Browser.opera) {
+                        layer.bringToFront();
+                    }
+                };
+                $scope.resetTmcHighlight = (e) => {
+                    $scope.tmcGeojson.resetStyle(e.target);
+                };
+                $scope.zoomToFeatureShowPopup = (e) => {
+                    $scope.mapModel.map.fitBounds(e.target.getBounds());
+                    const popup = L.popup({
+                            closeButton: true,
+                        })
+                        .setContent(e.target.feature.properties.message)
+                        .setLatLng(e.latlng);
+                    $scope.mapModel.map.openPopup(popup);
+                };
+                $scope.getIconLocation = (feature) => {
+                    let coords = feature.geometry.coordinates;
+                    return new L.LatLng(coords[0][1], coords[0][0]);
+                };
                 /**
                  * Dispatches all commands sent by Mapservice by using id and then performing the corresponding function
                  */
@@ -1085,9 +1207,9 @@ angular.module('orsApp')
                         case 12:
                             $scope.togglePolygonsIntervals(params._package);
                             break;
-			case 13:
-			    $scope.addLandmark(params._package);
-			    break;
+                        case 13:
+                            $scope.addLandmark(params._package);
+                            break;
                         default:
                             break;
                     }
