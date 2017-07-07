@@ -148,6 +148,7 @@
     "waytypes": "Way types", 
     "surface": "Surfaces", 
     "green": "Green index", 
+    "noise": "Noise level",
     "FROM": "from", 
     "TO": "to", 
     "SHARE_LINK": "Share link", 

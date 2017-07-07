@@ -147,6 +147,7 @@
     "waytypes": "Tipos de caminho", 
     "surface": "Superfícies", 
     "green": "Green index", 
+    "noise": "Noise level",
     "FROM": "de", 
     "TO": "para", 
     "SHARE_LINK": "Partilhar link", 

@@ -147,6 +147,7 @@
     "waytypes": "Typy dróg", 
     "surface": "Nawierzchnie", 
     "green": "Green index", 
+    "noise": "Noise level",
     "FROM": "od", 
     "TO": "do", 
     "SHARE_LINK": "Udostępnij", 
